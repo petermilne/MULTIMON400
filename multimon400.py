@@ -2,12 +2,30 @@
 import pexpect
 import threading
 import time
+import socket
+import epics
+import re
 
 class Uut:
+    def query_ioc_name(self):
+        ioc_name_pv = 'IP:' + re.sub('\.', ':', self.ip)
+        pv = epics.PV(ioc_name_pv, 
+                     connection_timeout=5)
+        self.epics_hn = pv.get()
+        print("self.epics_hn set %s" % self.epics_hn)
+        
     def __init__(self, _name):
         self.name = _name
-        self.ip = "0.0.0.0"
-        self.epics_hn = "acq1001_000"
+        self.ip = socket.gethostbyname(self.name)
+        
+        self.query_ioc_name()
+        if self.epics_hn == None:
+            if self.ip != self.name:
+                self.epics_hn = self.name
+            else:
+                print("No epics hn for %s" % self)
+            
+            
         
     def init(self):
         ping = pexpect.spawn("ping -c1 %s" % self.name)
