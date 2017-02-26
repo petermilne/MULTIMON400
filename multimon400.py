@@ -5,6 +5,8 @@ import time
 import socket
 import epics
 import re
+import sys
+import time
 
 class Uut:
     def query_ioc_name(self):
@@ -15,6 +17,7 @@ class Uut:
         print("self.epics_hn set %s" % self.epics_hn)
         
     def __init__(self, _name):
+        self.pvs = {};
         self.name = _name
         self.ip = socket.gethostbyname(self.name)
         
@@ -24,6 +27,8 @@ class Uut:
                 self.epics_hn = self.name
             else:
                 print("No epics hn for %s" % self)
+                
+        
             
             
         
@@ -37,6 +42,20 @@ class Uut:
         return self.name == other.name  
     def __repr__(self):
         return "Uut(%s, %s, %s)" % (self.name, self.ip, self.epics_hn)
+    
+    def on_update(self, **kws):
+        self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['value']        
+     
+    def uut_status_update(self):
+        for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA'):            
+            epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update)        
+        
+    
+    def start_monitor(self):
+        self.pv_trunc = re.compile('.*:')
+        self.monitor = threading.Thread(target=self.uut_status_update)
+        self.monitor.setDaemon(True)
+        self.monitor.start()
     
 def cas_mon():
     casw = pexpect.spawn("casw -i 10")
@@ -63,6 +82,7 @@ def uut_mon():
         if not uut in uuts:
             print("New: %s" % uut)
             uuts.add(uut)
+            uut.start_monitor()
         
     
 
@@ -70,10 +90,20 @@ uut_monitor = threading.Thread(target=uut_mon)
 uut_monitor.setDaemon(True)
 uut_monitor.start()
 
-while True:
-    print( "Hello %s" % uuts )
+while True:   
+    print('<?xml version="1.0" encoding="UTF-8"?>')
+    print("<body><header>{}</header>".format(time.strftime("%a, %d %b %T %Z %Y" )))
     for uut in uuts:
-        print("Do CAGET %s:SYS:UPTIME HERE" % uut)
+        print("<record>")
+        print('<acq400monitor dt="1"/>')
+        print("<info>")        
+        print("<{}>".format(uut.epics_hn))
+        for key, value in sorted(uut.pvs.items()):
+            print(" <{}>{}</{}>".format(key, value, key))
+        print("</{}>".format(uut.epics_hn))
+        print("</info>")
+        print("</record>")
+    print("</body>")
     time.sleep(1)
 
 
