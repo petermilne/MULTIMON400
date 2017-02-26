@@ -20,11 +20,13 @@ class Uut:
         self.pvs = {};
         self.name = _name
         self.ip = socket.gethostbyname(self.name)
-        
+        if self.ip != self.name:                
+            self.name = re.sub('\..*', '', self.name)
+            
         self.query_ioc_name()
         if self.epics_hn == None:
-            if self.ip != self.name:
-                self.epics_hn = self.name
+            if self.ip != self.name:                                
+                self.epics_hn = self.name                
             else:
                 print("No epics hn for %s" % self)
                 
@@ -47,7 +49,8 @@ class Uut:
         self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['value']        
      
     def uut_status_update(self):
-        for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA'):            
+        for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
+                        ':SYS:0:TEMP', '1:SHOT', 'MODE:TRANS_ACT:STATE'):            
             epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update)        
         
     
@@ -60,7 +63,7 @@ class Uut:
 def cas_mon():
     casw = pexpect.spawn("casw -i 10")
 
-    CASWSTAT = "  ([\w\.]+):5064.*$"
+    CASWSTAT = "  ([\w\.-]+):5064.*$"
 
     while True:
         match = casw.expect([CASWSTAT, pexpect.EOF, pexpect.TIMEOUT])
@@ -81,8 +84,9 @@ def uut_mon():
         uut = Uut(i)
         if not uut in uuts:
             print("New: %s" % uut)
-            uuts.add(uut)
-            uut.start_monitor()
+            if uut.epics_hn != None:
+                uuts.add(uut)
+                uut.start_monitor()
         
     
 
@@ -91,22 +95,22 @@ uut_monitor.setDaemon(True)
 uut_monitor.start()
 
 while True:  
-    with open('acq400.xml', 'w') as xml:
+    with open('multimon_acq400.xml', 'w') as xml:
         xml.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         xml.write("<body><header>{}</header>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
         for uut in uuts:
             xml.write("<record>\n")
             xml.write('<acq400monitor dt="1"/>\n')
             xml.write("<info>\n")        
-            xml.write("<{}>\n".format(uut.epics_hn))
+            xml.write("<host>{}</host>\n".format(uut.epics_hn))
             
             for key, value in sorted(uut.pvs.items()):
                 xml.write(" <{}>{}</{}>\n".format(key, value, key))
-                
-            xml.write("</{}>\n".format(uut.epics_hn))
+                            
             xml.write("</info>\n")
             xml.write("</record>\n")
-            xml.write("</body>\n")
+            
+        xml.write("</body>\n")
     time.sleep(1)
 
 
