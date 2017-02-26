@@ -87,7 +87,18 @@ def uut_mon():
             if uut.epics_hn != None:
                 uuts.add(uut)
                 uut.start_monitor()
+    
+    
+# BAD BAD BAD: impose form on function, to cope with xsl sequence difficulty ..    
         
+def xml_sequence(uut):
+    try:
+        for key in ('UPTIME', 'TEMP', 'STATE', 'SHOT', 'SW', 'FPGA'):
+            yield (key, uut.pvs[key])
+    except KeyError:
+        return
+        
+            
     
 
 uut_monitor = threading.Thread(target=uut_mon)
@@ -104,7 +115,7 @@ while True:
             xml.write("<info>\n")        
             xml.write("<host>{}</host>\n".format(uut.epics_hn))
             
-            for key, value in sorted(uut.pvs.items()):
+            for key, value in xml_sequence(uut):
                 xml.write(" <{}>{}</{}>\n".format(key, value, key))
                             
             xml.write("</info>\n")
