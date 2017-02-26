@@ -50,7 +50,7 @@ class Uut:
      
     def uut_status_update(self):
         for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
-                        ':SYS:0:TEMP', '1:SHOT', 'MODE:TRANS_ACT:STATE'):            
+                        ':SYS:0:TEMP', ':1:SHOT', ':MODE:TRANS_ACT:STATE'):            
             epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update)        
         
     
