@@ -90,20 +90,23 @@ uut_monitor = threading.Thread(target=uut_mon)
 uut_monitor.setDaemon(True)
 uut_monitor.start()
 
-while True:   
-    print('<?xml version="1.0" encoding="UTF-8"?>')
-    print("<body><header>{}</header>".format(time.strftime("%a, %d %b %T %Z %Y" )))
-    for uut in uuts:
-        print("<record>")
-        print('<acq400monitor dt="1"/>')
-        print("<info>")        
-        print("<{}>".format(uut.epics_hn))
-        for key, value in sorted(uut.pvs.items()):
-            print(" <{}>{}</{}>".format(key, value, key))
-        print("</{}>".format(uut.epics_hn))
-        print("</info>")
-        print("</record>")
-    print("</body>")
+while True:  
+    with open('acq400.xml', 'w') as xml:
+        xml.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+        xml.write("<body><header>{}</header>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
+        for uut in uuts:
+            xml.write("<record>\n")
+            xml.write('<acq400monitor dt="1"/>\n')
+            xml.write("<info>\n")        
+            xml.write("<{}>\n".format(uut.epics_hn))
+            
+            for key, value in sorted(uut.pvs.items()):
+                xml.write(" <{}>{}</{}>\n".format(key, value, key))
+                
+            xml.write("</{}>\n".format(uut.epics_hn))
+            xml.write("</info>\n")
+            xml.write("</record>\n")
+            xml.write("</body>\n")
     time.sleep(1)
 
 
