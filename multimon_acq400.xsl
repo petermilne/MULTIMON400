@@ -87,7 +87,7 @@
         <xsl:for-each select="@*">
             <td class="REMpg-td">
                 <xsl:choose>
-                    <xsl:when test="../@dt &gt; 60">
+                    <xsl:when test="../@dt &gt; 20">
                         <xsl:attribute name="style">
                             <xsl:text>color: red</xsl:text>
                         </xsl:attribute>
@@ -133,7 +133,7 @@
 				 <a href="http://{.}/">
 				 	<xsl:value-of select="."/>
 				 </a>
-			</xsl:when>
+			</xsl:when>			
 			<xsl:otherwise>
 				<xsl:apply-templates select="."/>
 			</xsl:otherwise>
@@ -143,6 +143,29 @@
         </xsl:for-each>
     </xsl:template>
 
+    <xsl:template match="STATE">
+	<xsl:attribute name="style">
+	<xsl:choose>
+		<xsl:when test=". = 0">
+			<xsl:text>background-color:pink</xsl:text>
+		</xsl:when>
+		<xsl:when test=". = 1">
+			<xsl:text>background-color:yellow</xsl:text>
+		</xsl:when>
+		<xsl:when test=". = 2">
+			<xsl:text>background-color:green</xsl:text>
+		</xsl:when>
+		<xsl:when test=". = 3">
+			<xsl:text>background-color:green</xsl:text>
+		</xsl:when>
+		<xsl:otherwise>
+                        <xsl:text>background-color:cyan</xsl:text>
+                </xsl:otherwise>
+	</xsl:choose>
+	</xsl:attribute>
+	<xsl:value-of select="."/>
+	
+    </xsl:template>
     <xsl:template match="date">
         <xsl:value-of select="substring(.,12,8)"/>
     </xsl:template>
