@@ -17,7 +17,8 @@ class Uut:
         print("self.epics_hn set %s" % self.epics_hn)
         
     def __init__(self, _name):
-        self.pvs = {};
+        self.pvs = {}
+        self.delay = 0
         self.name = _name
         self.ip = socket.gethostbyname(self.name)
         if self.ip != self.name:                
@@ -39,6 +40,9 @@ class Uut:
         
     def __hash__(self):
         return hash(self.name)
+    def __lt__(self, other):
+        return self.epics_hn.__lt__(other.epics_hn)
+    
     def __eq__(self, other):
         if not isinstance(other, type(self)): return NotImplemented
         return self.name == other.name  
@@ -46,7 +50,8 @@ class Uut:
         return "Uut(%s, %s, %s)" % (self.name, self.ip, self.epics_hn)
     
     def on_update(self, **kws):
-        self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['value']        
+        self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['value']
+        self.delay = 0
      
     def uut_status_update(self):
         for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
@@ -109,7 +114,7 @@ while True:
     with open('multimon_acq400.xml', 'w') as xml:
         xml.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         xml.write("<body><header>{}</header>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
-        for uut in uuts:
+        for uut in sorted(uuts):
             xml.write("<record>\n")
             xml.write('<acq400monitor dt="1"/>\n')
             xml.write("<info>\n")        
@@ -120,6 +125,9 @@ while True:
                             
             xml.write("</info>\n")
             xml.write("</record>\n")
+            uut.delay += 1
+            if uut.delay > 20:
+                uuts.remove(uut)
             
         xml.write("</body>\n")
     time.sleep(1)

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<body><header>Mon, 27 Feb 16:46:59 GMT 2017</header>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_047</host>
+ <UPTIME>276897</UPTIME>
+ <TEMP>36.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>0</SHOT>
+ <SW>acq4xx-510-20161221223724 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_A5_67 2016/11/18</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_105</host>
+ <UPTIME>20547</UPTIME>
+ <TEMP>41.0</TEMP>
+ <STATE>0</STATE>
+ <SHOT>2</SHOT>
+ <SW>acq4xx-526-20170227100147 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_08_ff_64B_2DMA 2017/02/16</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_143</host>
+ <UPTIME>9126</UPTIME>
+ <TEMP>41.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>9</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_08_ff_64B 2016/04/22</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_148</host>
+ <UPTIME>236</UPTIME>
+ <TEMP>35.0</TEMP>
+ <STATE>0</STATE>
+ <SHOT>0</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1014_TOP_08_ff_64B 2016/12/23</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_149</host>
+ <UPTIME>234</UPTIME>
+ <TEMP>35.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>0</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1014_TOP_08_ff_64B 2016/12/23</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_153</host>
+ <UPTIME>277859</UPTIME>
+ <TEMP>42.0</TEMP>
+ <STATE>0</STATE>
+ <SHOT>0</SHOT>
+ <SW>acq4xx-492-20161103133454 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_02_02 2015/11/23</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_176</host>
+ <UPTIME>19922</UPTIME>
+ <TEMP>44.0</TEMP>
+ <STATE>0</STATE>
+ <SHOT>4</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_08_ff_64B 2016/04/22</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_182</host>
+ <UPTIME>289981</UPTIME>
+ <TEMP>37.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>5</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_03_67_DTD 2017/01/10</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_183</host>
+ <UPTIME>376792</UPTIME>
+ <TEMP>37.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>1</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_03_67_DTD 2017/01/10</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_184</host>
+ <UPTIME>375286</UPTIME>
+ <TEMP>36.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>1</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_03_67_DTD 2017/01/10</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_186</host>
+ <UPTIME>277618</UPTIME>
+ <TEMP>39.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>0</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_6B_ff 2017/02/24</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_187</host>
+ <UPTIME>275673</UPTIME>
+ <TEMP>37.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>8</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_6B_ff 2017/02/24</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq1001_199</host>
+ <UPTIME>16493</UPTIME>
+ <TEMP>42.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>6</SHOT>
+ <SW>acq4xx-524-20170207155711 PATCHED</SW>
+ <FPGA>ACQ1001_TOP_08_ff_64B 2016/04/22</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>acq2106_049</host>
+ <UPTIME>4005</UPTIME>
+ <TEMP>35.5</TEMP>
+ <STATE>0</STATE>
+ <SHOT>1</SHOT>
+ <SW>acq4xx-506-20161206134011 PATCHED</SW>
+ <FPGA>ACQ2106_TOP_04_04_04_04_04_04_9001_64B</FPGA>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>cpsc_153</host>
+ <UPTIME>2600741.0</UPTIME>
+</info>
+</record>
+<record>
+<acq400monitor dt="1"/>
+<info>
+<host>cpsc_154</host>
+ <UPTIME>2600743.0</UPTIME>
+</info>
+</record>
+</body>
