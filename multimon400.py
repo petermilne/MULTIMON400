@@ -1,22 +1,32 @@
 #!/usr/local/bin/python
 import pexpect
 import threading
+import subprocess
 import time
 import socket
 import epics
 import re
 import sys
 import time
+import os
+import exceptions
 
 class Uut:
     def query_ioc_name(self):
         ioc_name_pv = 'IP:' + re.sub('\.', ':', self.ip)
         pv = epics.PV(ioc_name_pv, 
-                     connection_timeout=5)
-        self.epics_hn = pv.get()
-        print("self.epics_hn set %s" % self.epics_hn)
+                     connection_timeout=5.0)
+        
+        try:
+            self.epics_hn = pv.get()
+        except TypeError:
+            print("TypeError : no worries")
+        except ArgumentError:
+            print("ArgumentError")
+        
         
     def __init__(self, _name):
+        print("Uut {}".format(_name))
         self.pvs = {}
         self.delay = 0
         self.name = _name
@@ -65,33 +75,38 @@ class Uut:
         self.monitor.setDaemon(True)
         self.monitor.start()
     
+
 def cas_mon():
-    casw = pexpect.spawn("casw -i 10")
-
-    CASWSTAT = "  ([\w\.-]+):5064.*$"
-
+    casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
+    expr = re.compile('  ([]\w.-]+):5064')
+    
     while True:
-        match = casw.expect([CASWSTAT, pexpect.EOF, pexpect.TIMEOUT])
-        if match == 0:
-            yield casw.match.group(1)        
-        elif match == 1:
-            print "EOF"
+        out = casw.stdout.readline()
+#        print("incoming:{}".format(out))
+        if out == '' and process.poll() != None:
             break
-        elif match == 2:
-            print "Timeout"
-            continue
-   
+        match = expr.search(out)
+        if match != None:
+#            print("yield:{}".format(match.group(1)))
+            yield match.group(1)
+            
 uuts = set()     
 
+def _uut_mon(hn):
+    global uuts
+#    print("_uut_mon() hn:{}".format(hn))
+    uut = Uut(str(hn))
+    if not uut in uuts:
+        print("New: %s" % uut)
+        if uut.epics_hn != None:
+            uuts.add(uut)
+            uut.start_monitor()
+            
 def uut_mon():  
     global uuts
-    for i in cas_mon():
-        uut = Uut(i)
-        if not uut in uuts:
-            print("New: %s" % uut)
-            if uut.epics_hn != None:
-                uuts.add(uut)
-                uut.start_monitor()
+    for hn in cas_mon():
+#        print("uut_mon() hn:{}".format(hn))
+        threading.Thread(target=_uut_mon, args=(hn, )).start()
     
     
 # BAD BAD BAD: impose form on function, to cope with xsl sequence difficulty ..    
@@ -110,13 +125,16 @@ uut_monitor = threading.Thread(target=uut_mon)
 uut_monitor.setDaemon(True)
 uut_monitor.start()
 
+DATFILE = 'multimon_acq400.xml'
+DATFTMP = DATFILE + '.new'
+
 while True:  
-    with open('multimon_acq400.xml', 'w') as xml:
+    with open(DATFTMP, 'w') as xml:
         xml.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         xml.write("<body><header>{}</header>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
         for uut in sorted(uuts):
             xml.write("<record>\n")
-            xml.write('<acq400monitor dt="1"/>\n')
+            xml.write('<acq400monitor dt="{}"/>\n'.format(uut.delay))
             xml.write("<info>\n")        
             xml.write("<host>{}</host>\n".format(uut.epics_hn))
             
@@ -126,10 +144,12 @@ while True:
             xml.write("</info>\n")
             xml.write("</record>\n")
             uut.delay += 1
-            if uut.delay > 20:
+            if uut.delay > 60:
                 uuts.remove(uut)
             
         xml.write("</body>\n")
+        
+    os.rename(DATFTMP, DATFILE)
     time.sleep(1)
 
 
