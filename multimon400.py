@@ -26,7 +26,7 @@ class Uut:
         
         
     def __init__(self, _name):
-        print("Uut {}".format(_name))
+#        print("Uut {}".format(_name))
         self.pvs = {}
         self.delay = 0
         self.name = _name
@@ -66,7 +66,8 @@ class Uut:
     def uut_status_update(self):
         for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
                         ':SYS:0:TEMP', ':1:SHOT', ':MODE:TRANS_ACT:STATE'):            
-            epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update)        
+            epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update) 
+            
         
     
     def start_monitor(self):
