@@ -3,13 +3,13 @@
 
 ## Theory of operation
 1. multimon400.py is a monitor process runs on the webserver
-1.1 spawns casw to monitor EPICS beacons
-1.2 for each EPICS IOC, spawns a monitor for notable PV's
-1.3 the monitors collect PV data
-1.4 a polling thread stores the data to multimon_acq400.xml
+  1. spawns casw to monitor EPICS beacons
+  2. for each EPICS IOC, spawns a monitor for notable PV's
+  3. the monitors collect PV data
+  4. a polling thread stores the data to multimon_acq400.xml
 2. web clients load multimon_acq400.html
-2.1 a JS poll loop fetches multimon_acq400.xml
-2.2 the web page renders the data with the transform in multimon_acq400.xsl
+  1. a JS poll loop fetches multimon_acq400.xml
+  2. the web page renders the data with the transform in multimon_acq400.xsl
 
 A more modern implementation would probably use a json data file and a pure .js render script ..
 
