@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+source /etc/profile.d/epics.sh
+
+echo START `date` >$LOGFILE
+
+
+ACQ400PIDF=/var/run/acq400mon.pid
+
+if [ -f $ACQ400PIDF ]; then
+	kill -9 $(cat $ACQ400PIDF)
+fi
+
+
+nice ./multimon400.py  >/dev/null 2>&1  &
+echo $! >$ACQ400PIDF
+

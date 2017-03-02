@@ -1,0 +1,5 @@
+mkdir -p /var/www/html/multimon
+cp * /var/www/html/multimon
+cp *.cron /etc/cron.hourly
+
+
