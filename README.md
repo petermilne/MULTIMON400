@@ -29,12 +29,25 @@ A more modern implementation would probably use a json data file and a pure .js 
 8. create this shell profile:
 
 [peter@eigg base-3.14.12.6]$ cat /etc/profile.d/epics.sh   
-export EPICS_BASE=/home/epics/base-3.14.12.6
+export EPICS_BASE=/home/epics/base-3.14.12.6  
 export PATH=$PATH:$EPICS_BASE/bin/linux-x86_64  
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$EPICS_BASE/lib/linux-x86_64  
 
 ### PYTHON
 1. pip install pyepics
 
+### Webserver
+Vanilla apache2 is fine
+
+## Install
+1. run ./install:
+  1. copies files to /var/www/html/multimon
+  2. configures a half-hourly restart in /etc/cron.hourly
+
+## Usage
+Point browser to http://server/multimon/multimon_acq400.html
+
+## Customise
+Easy to modify the html page for site-specific logo etc.
 
 
