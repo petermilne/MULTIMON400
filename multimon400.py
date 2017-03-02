@@ -149,9 +149,13 @@ while True:
                 uuts.remove(uut)
             
         xml.write("</body>\n")
-        
-    os.rename(DATFTMP, DATFILE)
-    time.sleep(1)
+
+    try:        
+	os.rename(DATFTMP, DATFILE)
+    except OSError:
+	print("OSError")
+
+    time.sleep(0.5)
 
 
 
