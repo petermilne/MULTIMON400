@@ -150,7 +150,7 @@
 			<xsl:text>background-color:pink</xsl:text>
 		</xsl:when>
 		<xsl:when test=". = 1">
-			<xsl:text>background-color:yellow</xsl:text>
+			<xsl:text>background-color:goldenrod</xsl:text>
 		</xsl:when>
 		<xsl:when test=". = 2">
 			<xsl:text>background-color:green</xsl:text>
@@ -163,8 +163,24 @@
                 </xsl:otherwise>
 	</xsl:choose>
 	</xsl:attribute>
-	<xsl:value-of select="."/>
-	
+	<xsl:value-of select="."/>	
+    </xsl:template>
+
+   <xsl:template match="TEMP">
+	<xsl:attribute name="style">
+	<xsl:choose>
+		<xsl:when test=". &gt;  60">
+			<xsl:text>background-color:red</xsl:text>
+		</xsl:when>
+		<xsl:when test=". &gt;  55">
+			<xsl:text>background-color:orangered</xsl:text>
+		</xsl:when>		
+		<xsl:otherwise>
+                        <xsl:text>background-color:grey</xsl:text>
+                </xsl:otherwise>
+	</xsl:choose>
+	</xsl:attribute>
+	<xsl:value-of select="."/>	
     </xsl:template>
     <xsl:template match="date">
         <xsl:value-of select="substring(.,12,8)"/>
