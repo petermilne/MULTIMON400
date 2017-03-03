@@ -112,13 +112,31 @@ def uut_mon():
     
 # BAD BAD BAD: impose form on function, to cope with xsl sequence difficulty ..    
         
+TAGS= [
+    ('UPTIME', 'Uptime'),
+    ('TEMP', 'T0'),
+    ('STATE', 'State'),
+    ('SHOT', 'Shot'),
+    ('SW', 'Software'),
+    ('FPGA', 'FPGA')    
+]
+    
+
 def xml_sequence(uut):
+    global TAGS
     try:
-        for key in ('UPTIME', 'TEMP', 'STATE', 'SHOT', 'SW', 'FPGA'):
+        for key, label in TAGS:
             yield (key, uut.pvs[key])
     except KeyError:
         return
-        
+   
+def xml_headers():
+    global TAGS
+    for label in ('Delay', 'UUT'):
+	yield label
+    for key, label in TAGS:
+	yield label
+    
             
     
 
@@ -132,18 +150,26 @@ DATFTMP = DATFILE + '.new'
 while True:  
     with open(DATFTMP, 'w') as xml:
         xml.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-        xml.write("<body><header>{}</header>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
+	xml.write("<body>\n")
+	xml.write("    <header>\n")
+        xml.write("        <ts>{}</ts>\n".format(time.strftime("%a, %d %b %T %Z %Y" )))
+	xml.write("        <cheads>\n")
+	for ch in xml_headers():	    
+	    xml.write('            <h1>{}</h1>\n'.format(ch))	
+	xml.write("        </cheads>\n")
+	xml.write("     </header>\n")
         for uut in sorted(uuts):
-            xml.write("<record>\n")
-            xml.write('<acq400monitor dt="{}"/>\n'.format(uut.delay))
-            xml.write("<info>\n")        
-            xml.write("<host>{}</host>\n".format(uut.epics_hn))
+            xml.write("    <record>\n")
+            xml.write('        <acq400monitor dt="{}"/>\n'.format(uut.delay))
+	    
+            xml.write("        <info>\n")        
+            xml.write("            <host>{}</host>\n".format(uut.epics_hn))
             
             for key, value in xml_sequence(uut):
-                xml.write(" <{}>{}</{}>\n".format(key, value, key))
+                xml.write("            <{}>{}</{}>\n".format(key, value, key))
                             
-            xml.write("</info>\n")
-            xml.write("</record>\n")
+            xml.write("        </info>\n")
+            xml.write("    </record>\n")
             uut.delay += 1
             if uut.delay > 60:
                 uuts.remove(uut)

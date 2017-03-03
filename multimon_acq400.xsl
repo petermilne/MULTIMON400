@@ -38,31 +38,10 @@
                 <td>
                 </td>
             </tr>
-            <tr>
-                <th colspan="4" class="REMpg-div">
-                    <xsl:attribute name="style">
-                        <xsl:text>text-align: right; padding-right: 4</xsl:text>
-                    </xsl:attribute>
-                    Local time at Server
-                </th>
-                <td class="REMpg-td">
-                    <xsl:value-of select="substring(.,12,9)"/>                    
-                </td>
-            </tr>
-
-            <div class="REMpg-div"></div>
-            <tr>
-                <th>Delay</th>
-                <th>Hostname</th>
-                <th>Uptime</th>
-                <th>T0</th>
-                <th>State</th>
-                <th>Shot</th>
-                <th>Software</th>
-                <th>FPGA</th>
-            </tr>
-
+            <div class="REMpg-div"></div>            
+	    	<xsl:apply-templates/>    
         </xsl:for-each>
+	
         <xsl:for-each select="record">
             <xsl:choose>
                 <xsl:when test="(position() mod 2) = 0">
@@ -82,7 +61,30 @@
         </xsl:for-each>
     </xsl:template>
 
-
+    <xsl:template match="ts">
+	    <tr>		
+		<th colspan="4" class="REMpg-div">
+		    <xsl:attribute name="style">
+			<xsl:text>text-align: right; padding-right: 4</xsl:text>
+		    </xsl:attribute>
+		    Local time at Server
+		</th>
+		<td class="REMpg-td">
+		    <xsl:value-of select="substring(.,12,9)"/>                    
+		</td>
+	    </tr>
+    </xsl:template>
+    
+    <xsl:template match="cheads">
+	    <tr>
+		<xsl:for-each select="./h1">
+		    <th>
+			<xsl:value-of select="."/>
+		    </th>
+		</xsl:for-each>		
+	    </tr>
+    </xsl:template>
+    
     <xsl:template match="acq400monitor">
         <xsl:for-each select="@*">
             <td class="REMpg-td">
