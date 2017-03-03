@@ -65,7 +65,9 @@ class Uut:
      
     def uut_status_update(self):
         for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
-                        ':SYS:0:TEMP', ':1:SHOT', ':MODE:TRANS_ACT:STATE'):            
+	                ':USER', ':TEST_DESCR', \
+                        ':SYS:0:TEMP', ':1:SHOT', ':MODE:TRANS_ACT:STATE'):
+	    self.pvs[re.sub(self.pv_trunc, '', pvname)] = '...'
             epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update) 
             
         
@@ -118,7 +120,9 @@ TAGS= [
     ('STATE', 'State'),
     ('SHOT', 'Shot'),
     ('SW', 'Software'),
-    ('FPGA', 'FPGA')    
+    ('FPGA', 'FPGA'),
+    ('USER', 'User'),
+    ('TEST_DESCR', 'Test')
 ]
     
 

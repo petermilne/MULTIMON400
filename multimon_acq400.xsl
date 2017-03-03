@@ -20,7 +20,7 @@
     <xsl:template match="body">
         <xsl:for-each select="header">
             <tr>
-                <td rowspan="2">
+                <td rowspan="2" colspan="2">
                     <a href="http://www.d-tacq.com">
                         <img src="images/dtacq.png" alt="DTACQ" id="dtacqlogo"
                              margin="0" padding="0" border="0"
