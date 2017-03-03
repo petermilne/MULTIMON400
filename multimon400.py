@@ -138,7 +138,9 @@ def xml_headers():
 	yield label
     
             
-    
+if os.getenv("MULTIMON_CUSTOM") != None:
+    import multimon_custom
+    multimon_custom.register(TAGS, uuts)
 
 uut_monitor = threading.Thread(target=uut_mon)
 uut_monitor.setDaemon(True)
