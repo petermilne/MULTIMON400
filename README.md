@@ -51,7 +51,6 @@ Point browser to http://server/multimon/multimon_acq400.html
 Easy to modify the html page for site-specific logo etc.
 
 [(https://github.com/petermilne/MULTIMON400/screenshot.png)] example: shows site customization using
-[example] (/MULTIMON400/screenshot.png)
-[example] (/screenshot.png)
+![example] (/screenshot.png)
 export MULTIMON_CUSTOM=yes 
 
