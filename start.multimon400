@@ -13,6 +13,6 @@ if [ -f $ACQ400PIDF ]; then
 fi
 
 
-nice ./multimon400.py  >/dev/null 2>&1  &
+nice -n 18 ./multimon400.py  >/dev/null 2>&1  &
 echo $! >$ACQ400PIDF
 

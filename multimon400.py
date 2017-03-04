@@ -27,7 +27,9 @@ class Uut:
         
     def __init__(self, _name):
 #        print("Uut {}".format(_name))
-        self.pvs = {}
+	self.pv_trunc = re.compile('.*:')
+        self.pvs = {}	    # pv values
+	self._PVS = []	    # pv instances
         self.delay = 0
         self.name = _name
         self.ip = socket.gethostbyname(self.name)
@@ -61,23 +63,22 @@ class Uut:
     
     def on_update(self, **kws):
         self.pvs[re.sub(self.pv_trunc, '', kws['pvname'])] = kws['value']
-        self.delay = 0
+        self.delay = 0	
      
     def uut_status_update(self):
         for pvname in ( ':SYS:UPTIME', ':SYS:VERSION:SW', ':SYS:VERSION:FPGA', \
 	                ':USER', ':TEST_DESCR', \
                         ':SYS:0:TEMP', ':1:SHOT', ':MODE:TRANS_ACT:STATE'):
 	    self.pvs[re.sub(self.pv_trunc, '', pvname)] = '...'
-            epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update) 
-            
-        
-    
-    def start_monitor(self):
-        self.pv_trunc = re.compile('.*:')
-        self.monitor = threading.Thread(target=self.uut_status_update)
-        self.monitor.setDaemon(True)
-        self.monitor.start()
-    
+            self._PVS.append(epics.PV(self.epics_hn + pvname, auto_monitor=True, callback=self.on_update))
+	    	
+	while self.delay < 60:
+	    time.sleep(2.0)
+	    	
+	for pv in self._PVS:
+	    pv.disconnect()
+	    self._PVS.remove(pv)	
+	 
 
 def cas_mon():
     casw = subprocess.Popen(('casw', '-i', '2'), bufsize=-1, stdout=subprocess.PIPE)
@@ -103,7 +104,8 @@ def _uut_mon(hn):
         print("New: %s" % uut)
         if uut.epics_hn != None:
             uuts.add(uut)
-            uut.start_monitor()
+	    uut.uut_status_update()
+            
             
 def uut_mon():  
     global uuts
