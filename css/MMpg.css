@@ -1,0 +1,106 @@
+/********************************************************************
+
+   Multimon Style sheet
+
+********************************************************************/
+
+/* Default Styles */
+form {
+	font-family: "Arial, Helvetica, sans-serif"; 
+	background-color: white;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+p {
+	font-size: small;
+	font-weight: normal;
+	color: black;
+}
+
+p.important {
+	color: red;
+}
+
+table, th, td {
+	border: none;
+}
+
+th {
+	font-size: small;
+	font-weight: bold;
+	color: black;
+}
+
+td {
+	font-size: small;
+	font-weight: normal;
+	color: black;
+}
+
+li {
+	font-size: small;
+	font-weight: normal;
+	color: black;
+}
+
+h1, h2 {
+	font-weight: bold;
+	font-size: large;
+	vertical-align: middle;
+}
+
+a:link, a:visited {
+	color: blue;
+}
+
+a:active, a:hover {
+	color: red !important;
+}
+
+/** dtacqlogo - id of logo icon at top left. We want to enforce a BLUE border */
+#dtacqlogo {
+        border: 2px solid blue;
+        margin-top: 10px;
+        margin-left: 10px;
+}
+
+/* Multimon page Styles */
+table.REMpg-table
+{
+	border: medium solid blue;
+	border-collapse: collapse;
+	empty-cells: show;
+}
+
+td.REMpg-top-heading h1
+{
+	color: black;
+	text-align: center;
+}
+
+td.REMpg-top-heading h2
+{
+	color: black;
+	text-align: left;
+}
+
+/* Spacer used within page layouts */
+div.REMpg-div
+{
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+td.REMpg-td
+{
+	border: thin solid gray;
+  	font-family: Courier, sans-serif;
+	color: black;
+	vertical-align: middle;
+	text-align: right;
+	padding: 5px 5px 5px 5px;
+}
